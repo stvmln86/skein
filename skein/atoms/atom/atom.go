@@ -1,7 +1,11 @@
 // Package atom implements the Atom interface and functions.
 package atom
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/stvmln86/skein/skein/atoms/cell"
+)
 
 // Atom is a parsed program value.
 type Atom interface {
@@ -17,8 +21,9 @@ type Atom interface {
 
 // Atomise returns a parsed Atom from a string.
 func Atomise(s string) (Atom, error) {
-	switch {
-	default:
-		return nil, fmt.Errorf("cannot atomise %q - invalid format", s)
+	if c, err := cell.Parse(s); err == nil {
+		return c, nil
 	}
+
+	return nil, fmt.Errorf("cannot atomise %q - invalid format", s)
 }
